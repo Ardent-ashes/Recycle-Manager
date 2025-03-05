@@ -1,4 +1,10 @@
 {
-  "/protected/Report/page": "app/protected/Report/page.js",
-  "/protected/page": "app/protected/page.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/(auth-pages)/sign-up/page": "app/(auth-pages)/sign-up/page.js",
+  "/(auth-pages)/sign-in/page": "app/(auth-pages)/sign-in/page.js",
+  "/protected/page": "app/protected/page.js",
+  "/protected/Garbage/page": "app/protected/Garbage/page.js",
+  "/protected/Vehicle/page": "app/protected/Vehicle/page.js",
+  "/protected/Recycle/page": "app/protected/Recycle/page.js",
+  "/protected/Report/page": "app/protected/Report/page.js"
 }

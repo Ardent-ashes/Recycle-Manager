@@ -1,4 +1,4 @@
-// File: /home/ubuntu/Recycle-Manager/app/protected/Report/page.tsx
+// File: E:\DBMS\Recycle-Manager\app\protected\Report\page.tsx
 import * as entry from '../../../../../app/protected/Report/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

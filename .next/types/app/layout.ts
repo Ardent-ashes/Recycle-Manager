@@ -1,4 +1,4 @@
-// File: /home/ubuntu/Recycle-Manager/app/layout.tsx
+// File: E:\DBMS\Recycle-Manager\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
