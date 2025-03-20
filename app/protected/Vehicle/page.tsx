@@ -39,7 +39,7 @@ export default function VehicleRequestTable() {
         { id: 'garbage_req_id', label: 'Garbage Request ID', sortable: true },
         { id: 'vehicle_id', label: 'Vehicle ID', sortable: true },
         { id: 'vehicle_capacity', label: 'Vehicle Capacity', sortable: true },
-        { id: 'garbage_quantity', label: 'Garbage Quantity', sortable: true },
+        { id: 'amount_of_garbage', label: 'Amount of Garbage', sortable: true }, // Changed this line
         { id: 'factory_id', label: 'Factory ID', sortable: true },
         { id: 'factory_name', label: 'Factory Name', sortable: true },
         { id: 'factory_location', label: 'Factory Location', sortable: true },
@@ -125,22 +125,22 @@ export default function VehicleRequestTable() {
             let query = supabase
                 .from('vehicle_request')
                 .select(`
-                    vehicle_req_id,
-                    vehicle_id,
-                    garbage_req_id,
-                    vehicle_req_status,
-                    vehicle_request_date,
-                    vehicle:vehicle_id (
-                        vehicle_capacity,
-                        vehicle_type
-                    ),
-                    factory_garbage_request!garbage_req_id (
-                        garbage_type,
-                        garbage_quantity,
-                        factory_id,
-                        factory:factory_id (
-                            factory_name,
-                            factory_location
+                     vehicle_req_id,
+                vehicle_id,
+                garbage_req_id,
+                vehicle_req_status,
+                vehicle_request_date,
+                amount_of_garbage,
+                vehicle:vehicle_id (
+                    vehicle_capacity,
+                    vehicle_type
+                ),
+                factory_garbage_request!garbage_req_id (
+                    garbage_type,
+                    factory_id,
+                    factory:factory_id (
+                        factory_name,
+                        factory_location
                         )
                     )
                 `);
@@ -203,6 +203,14 @@ export default function VehicleRequestTable() {
 
     return (
         <div className="space-y-4 p-4">
+        <div className="bg-white shadow">
+        <div className="max-w-7xl  px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <h1 className="text-2xl font-bold text-gray-900">Routing Management</h1>
+          </div>
+        </div>
+      </div>
+             <PendingGarbageRequests />
             <div className="space-y-4 p-4">
                 {/* Column Selection */}
                 <div className="bg-gray-50 p-4 rounded-lg">
@@ -307,8 +315,8 @@ export default function VehicleRequestTable() {
                                                     ? `${row.vehicle?.vehicle_capacity} tons`
                                                     : column.id === 'garbage_type'
                                                     ? row.factory_garbage_request?.garbage_type
-                                                    : column.id === 'garbage_quantity'
-                                                    ? `${row.factory_garbage_request?.garbage_quantity} tons`
+                                                    : column.id === 'amount_of_garbage'  // Changed this line
+                                                    ? `${row.amount_of_garbage} tons` 
                                                     : column.id === 'factory_id'
                                                     ? row.factory_garbage_request?.factory_id
                                                     : column.id === 'vehicle_req_status'
@@ -318,7 +326,7 @@ export default function VehicleRequestTable() {
                                                                 ? 'bg-blue-100 text-blue-800'  // On Road
                                                                 : 'bg-green-100 text-green-800' // Completed
                                                         }`}>
-                                                            {row[column.id] ? 'On Road' : 'Completed'}
+                                                            {row[column.id] ? 'On the Way' : 'Completed'}
                                                         </span>
                                                     )
                                                     : row[column.id]}
@@ -351,7 +359,7 @@ export default function VehicleRequestTable() {
                     </div>
                 </div>
             </div>
-            <PendingGarbageRequests />
+           
         </div>
     );
 }

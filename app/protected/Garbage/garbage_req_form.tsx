@@ -74,6 +74,7 @@ export default function CreateRequestForm({ onRequestCreated, onCancel }: Create
             if (isDuplicate) {
                 throw new Error('This request ID already exists. Please use a different ID.');
             }
+            const garbageQuantity = parseInt(newRequest.garbage_quantity);
 
             const supabase = await createClient();
             const { data, error } = await supabase
@@ -82,7 +83,8 @@ export default function CreateRequestForm({ onRequestCreated, onCancel }: Create
                     garbage_req_id: requestId,
                     factory_id: newRequest.factory_id,
                     garbage_type: newRequest.garbage_type,
-                    garbage_quantity: parseInt(newRequest.garbage_quantity),
+                    garbage_quantity: garbageQuantity,
+                    remaining_garbage: garbageQuantity,
                     garbage_request_date: new Date().toISOString(),
                     garbage_req_status: true
                 }])

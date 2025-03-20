@@ -46,6 +46,7 @@ export default function GarbageRequestTable() {
       { id: 'factory_id', label: 'Factory ID', sortable: true },
       { id: 'garbage_type', label: 'Garbage Type', sortable: true },
       { id: 'garbage_quantity', label: 'Quantity', sortable: true },
+      { id: 'remaining_garbage', label: 'Remaining Quantity', sortable: true }, 
       { id: 'garbage_request_date', label: 'Request Date', sortable: true },
       { id: 'garbage_req_status', label: 'Status', sortable: true },
       { id: 'factory_name', label: 'Factory Name', sortable: true },  // Added
@@ -98,6 +99,7 @@ export default function GarbageRequestTable() {
                 garbage_req_id,
                 garbage_type,
                 garbage_quantity,
+                remaining_garbage,
                 garbage_req_status,
                 factory_id,
                 garbage_request_date,
@@ -328,6 +330,8 @@ export default function GarbageRequestTable() {
                                 : column.id === 'factory_location'
                                 ? row.factory?.factory_location
                                 : column.id === 'garbage_quantity'
+                                ? `${row[column.id]} tons`
+                                : column.id === 'remaining_garbage'
                                 ? `${row[column.id]} tons`
                                 : column.id === 'garbage_req_status'
                                 ? (

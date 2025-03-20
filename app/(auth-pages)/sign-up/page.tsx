@@ -20,6 +20,14 @@ export default async function Signup(props: {
 
   return (
     <>
+    <div className="text-center  mb-8">
+        <h1 className="text-5xl font-bold text-black mb-3 tracking-wide">
+        ReSync : An Industrial Recycling & Waste Management System
+        </h1>
+        <p className="text-black-200 text-xl">
+          Efficient • Sustainable • Compliant
+        </p>
+      </div>
       <form className="flex flex-col min-w-64 max-w-64 mx-auto">
         <h1 className="text-2xl font-medium">Sign up</h1>
         <p className="text-sm text text-foreground">

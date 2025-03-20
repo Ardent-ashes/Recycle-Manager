@@ -1,6 +1,6 @@
 
 
-import { Calendar, Home, Inbox, Search, Factory, Truck } from "lucide-react"
+import { Calendar, Home, Inbox, Search, Factory, Truck, Contact } from "lucide-react"
 
 import {
   Sidebar,
@@ -21,12 +21,17 @@ const items = [
     icon: Home,
   },
   {
+    title: "Details Info",
+    url: "http://localhost:3000/protected/Info",
+    icon: Search,
+  },
+  {
     title: "Garbage Collection",
     url: "http://localhost:3000/protected/Garbage",
     icon: Inbox,
   },
   {
-    title: "Routing Management",
+    title: "Transportation Management",
     url: "http://localhost:3000/protected/Vehicle",
     icon: Truck,
   },
@@ -36,10 +41,16 @@ const items = [
     icon: Factory,
   },
   {
-    title: "Reports",
+    title: "Summary Reports",
     url: "http://localhost:3000/protected/Report",
     icon: Calendar,
   },
+  {
+    title: "Contact Us",
+    url: "http://localhost:3000/protected/ContactUs",
+    icon: Contact,
+  },
+  
 ]
 
 export function AppSidebar() {
@@ -47,7 +58,17 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+        <SidebarGroupLabel 
+            style={{ 
+              color: '#006400',
+              fontSize: '28px',  // Increased font size
+              fontWeight: 'bold', // Made text bold
+              padding: '20px',    // Added some padding
+              letterSpacing: '1px' // Optional: adds some spacing between letters
+            }}
+          >
+            ReSync
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

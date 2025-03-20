@@ -2,6 +2,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { Loader2, ArrowUpDown } from "lucide-react";
 import { useEffect, useState } from 'react';
+import CreateRecycleProcess from "./createRecycleProcess";
 
 import {
     Table,
@@ -26,17 +27,14 @@ const columnDefinitions = [
     { id: 'plant_location', label: 'Plant Location', sortable: true },
     { id: 'vehicle_id', label: 'Vehicle ID', sortable: true },
     { id: 'total_capacity', label: 'Total Capacity', sortable: true },
-    { id: 'remaining_capacity', label: 'Remaining Capacity', sortable: true },
-    //{ id: 'processed_garbage_quantity', label: 'Processed Quantity', sortable: true },
     { id: 'garbage_type', label: 'Garbage Type', sortable: true },
     { id: 'factory_location', label: 'Factory Location', sortable: true },
+    { id: 'factory_name', label: 'Factory Name', sortable: true },
+    { id: 'amount_of_garbage', label: 'Amount of Garbage', sortable: true },
     { id: 'plant_process_status', label: 'Process Status', sortable: true },
     { id: 'process_date', label: 'Process Date', sortable: true },
-    { id: 'actions', label: 'Actions', required: true, sortable: false } ,// New Actions Column
-    { id: 'garbage_quantity', label: 'Garbage Quantity', sortable: true }, // New Garbage Quantity Column
-
+    { id: 'actions', label: 'Actions', required: true, sortable: false }
 ];
-
 const ITEMS_PER_PAGE = 10;
 
 // ActionButtons Component
@@ -80,9 +78,9 @@ export default function RecycleProcessTable() {
         'plant_id',
         'plant_name',
         'plant_location',
-         //'processed_garbage_quantity',
-         'garbage_quantity',
+        'amount_of_garbage',
         'garbage_type',
+        'factory_name',
         'plant_process_status',
         'actions' // Ensure 'actions' is always selected
     ]);
@@ -119,31 +117,32 @@ export default function RecycleProcessTable() {
         try {
             const supabase = createClient();
             const { data: recycleProcesses, error: recycleError } = await supabase
-                .from('recycle_process')
-                .select(`
-                    *,
-                    recycle_plant:plant_id (
-                        plant_name,
-                        plant_location,
-                        plant_total_capacity,
-                        plant_remaining_capacity
-                    ),
-                    vehicle_request:vehicle_req_id (
-                        vehicle_id,
-                        garbage_req_id,
-                        garbage_request:garbage_req_id (
-                            garbage_type,
-                            garbage_quantity,
-                            factory:factory_id (
-                                factory_location
-                            )
-                        )
-                    )
-                `);
-                // Removed .order() for client-side sorting
+    .from('recycle_process')
+    .select(`
+        *,
+        recycle_plant:plant_id (
+            plant_name,
+            plant_location,
+            plant_total_capacity,
+            plant_remaining_capacity
+        ),
+        vehicle_request:vehicle_req_id (
+            vehicle_id,
+            amount_of_garbage,
+            garbage_req_id,
+            garbage_request:garbage_req_id (
+                garbage_type,
+                factory:factory_id (
+                    factory_location,
+                    factory_name
+                )
+            )
+        )
+    `);
 
             if (recycleError) throw recycleError;
 
+            // Properly transform the data ensuring all fields are present
             const transformedData = recycleProcesses.map(process => ({
                 recycle_process_id: process.recycle_process_id,
                 plant_id: process.plant_id,
@@ -153,12 +152,10 @@ export default function RecycleProcessTable() {
                 plant_location: process.recycle_plant?.plant_location || '',
                 vehicle_id: process.vehicle_request?.vehicle_id || '',
                 total_capacity: process.recycle_plant?.plant_total_capacity || 0,
-                remaining_capacity: process.recycle_plant?.plant_remaining_capacity || 0,
-                //processed_garbage_quantity: process.processed_garbage_quantity || 0,
-                garbage_quantity: process.vehicle_request?.garbage_request?.garbage_quantity || 0, // New Garbage Quantity
-
                 garbage_type: process.vehicle_request?.garbage_request?.garbage_type || '',
                 factory_location: process.vehicle_request?.garbage_request?.factory?.factory_location || '',
+                factory_name: process.vehicle_request?.garbage_request?.factory?.factory_name || '',
+                amount_of_garbage: process.vehicle_request?.amount_of_garbage || 0,
                 plant_process_status: process.plant_process_status,
                 process_date: process.process_date
             }));
@@ -268,6 +265,14 @@ export default function RecycleProcessTable() {
 
     return (
         <div className="space-y-4 p-4">
+            <div className="bg-white shadow">
+        <div className="max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <h1 className="text-2xl font-bold text-gray-900">Recycle Process Management</h1>
+          </div>
+        </div>
+      </div>
+             <CreateRecycleProcess onSuccess={fetchData} />
             {/* Column Selection */}
             <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="font-bold mb-2">Select Columns:</h3>
@@ -358,7 +363,7 @@ export default function RecycleProcessTable() {
                                             }`}>
                                                 {row[column.id] ? 'In Process' : 'Completed'}
                                             </span>
-                                        ) : column.id.includes('capacity') || column.id.includes('quantity') ? (
+                                        ) : column.id.includes('capacity') || column.id === 'amount_of_garbage' ? (
                                             `${row[column.id]} tons`
                                         ) : column.id === 'process_date' ? (
                                             row[column.id] ? new Date(row[column.id]).toLocaleDateString() : ''
