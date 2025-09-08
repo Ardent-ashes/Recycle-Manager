@@ -1,4 +1,4 @@
-# ♻️ Recycle Management App
+# ♻️ ReSync
 
 A modern **Next.js** and **Supabase**-powered application designed to streamline waste management and recycling processes. Track, manage, and optimize your recycling efforts efficiently with our comprehensive solution.
 
